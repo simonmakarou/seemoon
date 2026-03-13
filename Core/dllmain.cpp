@@ -6,10 +6,6 @@ namespace
 {
 DWORD WINAPI InitializationThread(LPVOID)
 {
-    MessageBoxA(nullptr, "Injected into WoW!", "SeeBot", MB_OK | MB_ICONINFORMATION);
-
-    // Важно: Lua-вызовы должны выполняться только из игрового потока
-    // (будущий EndScene hook), а не из DllMain/потока инициализации.
     seebot::Init();
     return 0;
 }

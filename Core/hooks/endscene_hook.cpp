@@ -11,9 +11,14 @@ EndSceneHookState g_endSceneHookState = EndSceneHookState::not_installed;
 EndSceneFunction g_endSceneTarget = nullptr;
 EndSceneFunction g_originalEndScene = nullptr;
 bool g_hookEnabled = false;
+EndSceneTickCallback g_tickCallback = nullptr;
 
 void EndSceneHookStub()
 {
+    if (g_tickCallback != nullptr)
+    {
+        g_tickCallback();
+    }
 }
 
 bool ResolveEndSceneTarget(EndSceneFunction& target)
@@ -58,6 +63,13 @@ bool RemoveEndSceneHookInternal(const EndSceneFunction target)
     return target != nullptr;
 }
 } // namespace
+
+
+void SetEndSceneTickCallback(const EndSceneTickCallback callback)
+{
+    std::lock_guard<std::mutex> lock(g_endSceneHookMutex);
+    g_tickCallback = callback;
+}
 
 EndSceneHookResult InstallEndSceneHook()
 {

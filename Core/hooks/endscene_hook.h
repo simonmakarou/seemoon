@@ -19,9 +19,11 @@ enum class EndSceneHookResult
 };
 
 using EndSceneFunction = void (*)();
+using EndSceneTickCallback = void (*)();
 
 EndSceneHookResult InstallEndSceneHook();
 EndSceneHookResult RemoveEndSceneHook();
+void SetEndSceneTickCallback(EndSceneTickCallback callback);
 
 [[nodiscard]] EndSceneHookState GetEndSceneHookState();
 [[nodiscard]] EndSceneFunction GetOriginalEndScene();
